@@ -1,0 +1,59 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>D:\Lab3\AssemblerApplication1\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\Lab3\AssemblerApplication1\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\Lab3\AssemblerApplication1\Debug\AssemblerApplication1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>AssemblerApplication1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>AssemblerApplication1.map</FILE>
+  <FILE>AssemblerApplication1.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <LUT><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>21</LINE></LUT>
+  <setup_f1><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>112</LINE></setup_f1>
+  <count1><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>244</LINE></count1>
+  <count2><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>266</LINE></count2>
+  <f1><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>117</LINE></f1>
+  <t1><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>131</LINE></t1>
+  <t2><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>138</LINE></t2>
+  <test1><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>145</LINE></test1>
+  <test2><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>155</LINE></test2>
+  <increment_right><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>202</LINE></increment_right>
+  <delay_short><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>328</LINE></delay_short>
+  <C1><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>150</LINE></C1>
+  <decrement_right><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>211</LINE></decrement_right>
+  <C2><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>160</LINE></C2>
+  <display><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>169</LINE></display>
+  <loop><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>176</LINE></loop>
+  <set_ser_in_1><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>182</LINE></set_ser_in_1>
+  <end><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>185</LINE></end>
+  <increment_left><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>207</LINE></increment_left>
+  <decrement_left><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>216</LINE></decrement_left>
+  <d_0><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>224</LINE></d_0>
+  <d_1><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>228</LINE></d_1>
+  <d_2><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>232</LINE></d_2>
+  <d_3><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>236</LINE></d_3>
+  <d_4><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>240</LINE></d_4>
+  <d_5><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>288</LINE></d_5>
+  <d_6><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>292</LINE></d_6>
+  <d_7><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>296</LINE></d_7>
+  <d_8><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>300</LINE></d_8>
+  <d_9><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>304</LINE></d_9>
+  <debounce><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>311</LINE></debounce>
+  <L5><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>316</LINE></L5>
+  <L2><FILE>D:\Lab3\AssemblerApplication1\main.asm</FILE><LINE>332</LINE></L2>
+ </LABELS>
+</ASSEMBLER_INFO>
