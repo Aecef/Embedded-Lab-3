@@ -115,52 +115,45 @@ setup_f1:
 	rcall count1
 	rcall count2
 f1:
-	sbic PINB, 4
-		rjmp t1
 	sbis PINB, 4
-		rjmp t2
-	rjmp f1 ; Otherwise go back to the start of f1
-;min_val:
-;	cpi r30, 0
-;	rjmp d2
-;rjmp f1
-;max_val:
-;	cpse r31, r30
-;	rjmp d1
-rjmp f1
-t1:
-	;cpi r31, 9
-	;breq max_val
-;d1:
+		rjmp check_debounce_A
 	sbis PINB, 3
-	breq test1
+		rjmp check_debounce_B
+rjmp f1 ; Otherwise go back to the start of f1
+
+check_debounce_A:
+	sbis PINB, 4
+	rjmp zero_zero_state
 	rjmp f1
-t2:
-	;cpi r31, 0
-	;breq min_val
-;d2:
+check_debounce_B:
 	sbis PINB, 3
-	breq test2
+	rjmp zero_zero_state
 	rjmp f1
-test1:
+
+zero_zero_state:
+	rcall debounce
+	cp r24, r25
+	brlo rpg_active
+	rjmp f1
+
+rpg_active:
+	sbic PINB, 4
+		rjmp inc_display
+	sbic PINB, 3
+		rjmp dec_display
+	rjmp rpg_active
+
+inc_display:
 	rcall increment_right
 	rcall count1
 	rcall count2
-	rcall delay_short
-C1:	sbic PINB, 3
 	rjmp f1
-rcall delay_short
-rjmp C1
 
-test2:
-rcall decrement_right
-rcall count1
-rcall count2
-rcall delay_short
-C2: sbic PINB, 4
+dec_display:
+	rcall decrement_right
+	rcall count1
+	rcall count2
 	rjmp f1
-rcall delay_short
-rjmp C2
 
 ;-----------------------------------------------------------------
 ; Display Digits
@@ -309,32 +302,43 @@ ret
 ;------------------------------------------------------------------
 ;------------------------------------------------------------------
 debounce:
-	ldi  r19, 0 ;Tracks 1s
-    ldi  r20, 0 ;Tracks 0s
-    ldi  r23, 10 ;Loop Count
-	ldi  r24, 0 
-L5: dec  r23
+	ldi  r25, 0 ;Tracks 1s
+    ldi  r24, 0 ;Tracks 0s
+    ldi  r23, 15 ;Loop Count 1.5ms total. Min delay is 2.5ms so this is okay 
+D1: dec  r23
 	sbis PINB , 3
-	inc r20
+	inc r25
+	sbis PINB, 4
+	inc r25
 	sbic PINB, 3
-	inc r19
-	;rcall delay_shorter
-    brne L5
-	cp r19, r20
-	;brge pushed_A
+	inc r24
+	sbic PINB, 4
+	inc r24
+	rcall delay_shorter
+    brne D1
 ret
 
-
+; 1 ms delay
 delay_short:
   ldi  r26, 7
     ldi  r27, 255
     ldi  r28, 255
-L2: dec  r28
-    brne L2
+L1: dec  r28
+    brne L1
     dec  r27
+    brne L1
+    dec  r26
+    brne L1
+    nop
+ret
+
+; .1 ms delay
+delay_shorter:
+	ldi  r26, 3
+    ldi  r27, 19
+L2: dec  r27
     brne L2
     dec  r26
     brne L2
-    nop
 ret
 

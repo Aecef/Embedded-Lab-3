@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  D:\Lab3\AssemblerApplication1\main.asm Wed Mar 02 12:59:52 2022
+AVRASM ver. 2.2.8  C:\Users\brewe\Documents\GitHub\Embedded-Lab-3\Lab3\AssemblerApplication1\main.asm Mon Mar 07 15:44:29 2022
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -1098,14 +1098,48 @@ AVRASM ver. 2.2.8  D:\Lab3\AssemblerApplication1\main.asm Wed Mar 02 12:59:52 20
                                  setup_f1:
 000045 e0f0                      	ldi r31, 0 ; Leftmost digit
 000046 e0e0                      	ldi r30, 0 ; Rightmost digit
-000047 d054                      	rcall count1
-000048 d068                      	rcall count2
+000047 d069                      	rcall count1
+000048 d07d                      	rcall count2
                                  f1:
-000049 991c                      	sbic PINB, 4
-00004a c004                      		rjmp t1
-00004b 9b1c                      	sbis PINB, 4
-00004c c005                      		rjmp t2
-00004d cffb                      	rjmp f1 ; Otherwise go back to the start of f1
+000049 9b1c                      	sbis PINB, 4
+00004a c003                      		rjmp check_debounce_A
+00004b 9b1b                      	sbis PINB, 3
+00004c c004                      		rjmp check_debounce_B
+00004d cffb                      rjmp f1 ; Otherwise go back to the start of f1
+                                 
+                                 check_debounce_A:
+00004e 9b1c                      	sbis PINB, 4
+00004f c004                      	rjmp zero_zero_state
+000050 cff8                      	rjmp f1
+                                 check_debounce_B:
+000051 9b1b                      	sbis PINB, 3
+000052 c001                      	rjmp zero_zero_state
+000053 cff5                      	rjmp f1
+                                 
+                                 zero_zero_state:
+000054 d09a                      	rcall debounce
+000055 1789                      	cp r24, r25
+000056 f008                      	brlo rpg_active
+000057 cff1                      	rjmp f1
+                                 
+                                 rpg_active:
+000058 991c                      	sbic PINB, 4
+000059 c003                      		rjmp inc_display
+00005a 991b                      	sbic PINB, 3
+00005b c005                      		rjmp dec_display
+00005c cffb                      	rjmp rpg_active
+                                 
+                                 inc_display:
+00005d d031                      	rcall increment_right
+00005e d052                      	rcall count1
+00005f d066                      	rcall count2
+000060 cfe8                      	rjmp f1
+                                 
+                                 dec_display:
+000061 d034                      	rcall decrement_right
+000062 d04e                      	rcall count1
+000063 d062                      	rcall count2
+000064 cfe4                      	rjmp f1
                                  ;min_val:
                                  ;	cpi r30, 0
                                  ;	rjmp d2
@@ -1113,216 +1147,227 @@ AVRASM ver. 2.2.8  D:\Lab3\AssemblerApplication1\main.asm Wed Mar 02 12:59:52 20
                                  ;max_val:
                                  ;	cpse r31, r30
                                  ;	rjmp d1
-00004e cffa                      rjmp f1
+000065 cfe3                      rjmp f1
                                  t1:
                                  	;cpi r31, 9
                                  	;breq max_val
                                  ;d1:
-00004f 9b1b                      	sbis PINB, 3
-000050 f021                      	breq test1
-000051 cff7                      	rjmp f1
+                                 	;sbis PINB, 3
+                                 	;breq test1
+000066 cfe2                      	rjmp f1
                                  t2:
                                  	;cpi r31, 0
                                  	;breq min_val
                                  ;d2:
-000052 9b1b                      	sbis PINB, 3
-000053 f049                      	breq test2
-000054 cff4                      	rjmp f1
+000067 9b1b                      	sbis PINB, 3
+000068 f049                      	breq test2
+000069 cfdf                      	rjmp f1
                                  test1:
-000055 d024                      	rcall increment_right
-000056 d045                      	rcall count1
-000057 d059                      	rcall count2
-000058 d08d                      	rcall delay_short
-000059 991b                      C1:	sbic PINB, 3
-00005a cfee                      	rjmp f1
-00005b d08a                      rcall delay_short
-00005c cffc                      rjmp C1
+00006a d024                      	rcall increment_right
+00006b d045                      	rcall count1
+00006c d059                      	rcall count2
+00006d d090                      	rcall delay_short
+00006e 991b                      C1:	sbic PINB, 3
+00006f cfd9                      	rjmp f1
+000070 d08d                      rcall delay_short
+000071 cffc                      rjmp C1
                                  
                                  test2:
-00005d d023                      rcall decrement_right
-00005e d03d                      rcall count1
-00005f d051                      rcall count2
-000060 d085                      rcall delay_short
-000061 991c                      C2: sbic PINB, 4
-000062 cfe6                      	rjmp f1
-000063 d082                      rcall delay_short
-000064 cffc                      rjmp C2
+000072 d023                      rcall decrement_right
+000073 d03d                      rcall count1
+000074 d051                      rcall count2
+000075 d088                      rcall delay_short
+000076 991c                      C2: sbic PINB, 4
+000077 cfd1                      	rjmp f1
+000078 d085                      rcall delay_short
+000079 cffc                      rjmp C2
                                  
                                  ;-----------------------------------------------------------------
                                  ; Display Digits
                                  ;------------------------------------------------------------------
                                  ; to display for two digits, need to run display function twice. The first display call places the rightmost digit, the latter does the leftmost digit. 
                                  display: 
-000065 930f                      push R16 ; Put R16 on stack
-000066 932f                      push R18 ; Put R18 on stack
-000067 b72f                      in R18, SREG
-000068 932f                      push R18
+00007a 930f                      push R16 ; Put R16 on stack
+00007b 932f                      push R18 ; Put R18 on stack
+00007c b72f                      in R18, SREG
+00007d 932f                      push R18
                                  
-000069 e028                      ldi R18, 8 ; Loop --> test all 8 bits
+00007e e028                      ldi R18, 8 ; Loop --> test all 8 bits
                                  loop:
-00006a 1f00                      	rol R16 ; Rotate left through Carry
-00006b f010                      	brcs set_ser_in_1 ; Branch if Carry is set;
-00006c 9828                      	cbi PORTB, 0 ; Set SER to 0
-00006d c001                      	rjmp end
+00007f 1f00                      	rol R16 ; Rotate left through Carry
+000080 f010                      	brcs set_ser_in_1 ; Branch if Carry is set;
+000081 9828                      	cbi PORTB, 0 ; Set SER to 0
+000082 c001                      	rjmp end
                                  
                                  set_ser_in_1:
-00006e 9a28                      	sbi PORTB, 0 ; Set SER to 1
+000083 9a28                      	sbi PORTB, 0 ; Set SER to 1
                                  
                                  end:
-00006f 9a29                      sbi PORTB, 1 ; Set SRCK to 1
-000070 9829                      cbi PORTB, 1 ; Set SRCK to 0
-000071 952a                      dec R18
-000072 f7b9                      brne loop
+000084 9a29                      sbi PORTB, 1 ; Set SRCK to 1
+000085 9829                      cbi PORTB, 1 ; Set SRCK to 0
+000086 952a                      dec R18
+000087 f7b9                      brne loop
                                  
-000073 9a2a                      sbi PORTB, 2 ; Set RCLK to 1
-000074 982a                      cbi PORTB, 2 ; Set RCLE to 0
+000088 9a2a                      sbi PORTB, 2 ; Set RCLK to 1
+000089 982a                      cbi PORTB, 2 ; Set RCLE to 0
                                  
                                  ; restore registers from stack
-000075 912f                      pop R18
-000076 bf2f                      out SREG, R18
-000077 912f                      pop R18
-000078 910f                      pop R16
-000079 9508                      ret
+00008a 912f                      pop R18
+00008b bf2f                      out SREG, R18
+00008c 912f                      pop R18
+00008d 910f                      pop R16
+00008e 9508                      ret
                                  
                                  ; Increment and Decrement functions for left and right digits
                                  increment_right:
-00007a 95e3                      	inc r30
-00007b 30ea                      	cpi r30, 10
-00007c f009                      	breq increment_left
-00007d 9508                      ret
+00008f 95e3                      	inc r30
+000090 30ea                      	cpi r30, 10
+000091 f009                      	breq increment_left
+000092 9508                      ret
                                  increment_left:
-00007e e0e0                      	ldi r30, 0
-00007f 95f3                      	inc r31
-000080 9508                      ret
+000093 e0e0                      	ldi r30, 0
+000094 95f3                      	inc r31
+000095 9508                      ret
                                  decrement_right:
-000081 30e0                      	cpi r30, 0
-000082 f011                      	breq decrement_left
-000083 95ea                      	dec r30
-000084 9508                      ret
+000096 30e0                      	cpi r30, 0
+000097 f011                      	breq decrement_left
+000098 95ea                      	dec r30
+000099 9508                      ret
                                  decrement_left:
-000085 e0e9                      	ldi r30, 9
-000086 95fa                      	dec r31
-000087 9508                      ret
+00009a e0e9                      	ldi r30, 9
+00009b 95fa                      	dec r31
+00009c 9508                      ret
                                  
                                  ;------------------------------------------------------------------
                                  ; Count functions decide which digit to display and display it
                                  ;------------------------------------------------------------------
                                  d_0:
-000088 9100 010b                 	lds R16, LUT+11
-00008a dfda                      	rcall display
-00008b 9508                      ret
+00009d 9100 010b                 	lds R16, LUT+11
+00009f dfda                      	rcall display
+0000a0 9508                      ret
                                  d_1:
-00008c 9100 010c                 	lds R16, LUT+12
-00008e dfd6                      	rcall display
-00008f 9508                      ret
+0000a1 9100 010c                 	lds R16, LUT+12
+0000a3 dfd6                      	rcall display
+0000a4 9508                      ret
                                  d_2:
-000090 9100 010d                 	lds R16, LUT+13
-000092 dfd2                      	rcall display
-000093 9508                      ret
+0000a5 9100 010d                 	lds R16, LUT+13
+0000a7 dfd2                      	rcall display
+0000a8 9508                      ret
                                  d_3:
-000094 9100 010e                 	lds R16, LUT+14
-000096 dfce                      	rcall display
-000097 9508                      ret
+0000a9 9100 010e                 	lds R16, LUT+14
+0000ab dfce                      	rcall display
+0000ac 9508                      ret
                                  d_4:
-000098 9100 010f                 	lds R16, LUT+15
-00009a dfca                      	rcall display
-00009b 9508                      ret
-                                 count1:
-00009c 30e0                      	cpi r30, 0
-00009d f351                      	breq d_0
-00009e 30e1                      	cpi r30, 1
-00009f f361                      	breq d_1
-0000a0 30e2                      	cpi r30, 2
-0000a1 f371                      	breq d_2
-0000a2 30e3                      	cpi r30, 3
-0000a3 f381                      	breq d_3
-0000a4 30e4                      	cpi r30, 4
-0000a5 f391                      	breq d_4
-0000a6 30e5                      	cpi r30, 5
-0000a7 f0f1                      	breq d_5
-0000a8 30e6                      	cpi r30, 6
-0000a9 f101                      	breq d_6
-0000aa 30e7                      	cpi r30, 7
-0000ab f111                      	breq d_7
-0000ac 30e8                      	cpi r30, 8
-0000ad f121                      	breq d_8
-0000ae 30e9                      	cpi r30, 9
-0000af f131                      	breq d_9
+0000ad 9100 010f                 	lds R16, LUT+15
+0000af dfca                      	rcall display
 0000b0 9508                      ret
-                                 count2:
-0000b1 30f0                      	cpi r31, 0
-0000b2 f2a9                      	breq d_0
-0000b3 30f1                      	cpi r31, 1
-0000b4 f2b9                      	breq d_1
-0000b5 30f2                      	cpi r31, 2
-0000b6 f2c9                      	breq d_2
-0000b7 30f3                      	cpi r31, 3
-0000b8 f2d9                      	breq d_3
-0000b9 30f4                      	cpi r31, 4
-0000ba f2e9                      	breq d_4
-0000bb 30f5                      	cpi r31, 5
-0000bc f049                      	breq d_5
-0000bd 30f6                      	cpi r31, 6
-0000be f059                      	breq d_6
-0000bf 30f7                      	cpi r31, 7
-0000c0 f069                      	breq d_7
-0000c1 30f8                      	cpi r31, 8
-0000c2 f079                      	breq d_8
-0000c3 30f9                      	cpi r31, 9
-0000c4 f089                      	breq d_9
+                                 count1:
+0000b1 30e0                      	cpi r30, 0
+0000b2 f351                      	breq d_0
+0000b3 30e1                      	cpi r30, 1
+0000b4 f361                      	breq d_1
+0000b5 30e2                      	cpi r30, 2
+0000b6 f371                      	breq d_2
+0000b7 30e3                      	cpi r30, 3
+0000b8 f381                      	breq d_3
+0000b9 30e4                      	cpi r30, 4
+0000ba f391                      	breq d_4
+0000bb 30e5                      	cpi r30, 5
+0000bc f0f1                      	breq d_5
+0000bd 30e6                      	cpi r30, 6
+0000be f101                      	breq d_6
+0000bf 30e7                      	cpi r30, 7
+0000c0 f111                      	breq d_7
+0000c1 30e8                      	cpi r30, 8
+0000c2 f121                      	breq d_8
+0000c3 30e9                      	cpi r30, 9
+0000c4 f131                      	breq d_9
 0000c5 9508                      ret
+                                 count2:
+0000c6 30f0                      	cpi r31, 0
+0000c7 f2a9                      	breq d_0
+0000c8 30f1                      	cpi r31, 1
+0000c9 f2b9                      	breq d_1
+0000ca 30f2                      	cpi r31, 2
+0000cb f2c9                      	breq d_2
+0000cc 30f3                      	cpi r31, 3
+0000cd f2d9                      	breq d_3
+0000ce 30f4                      	cpi r31, 4
+0000cf f2e9                      	breq d_4
+0000d0 30f5                      	cpi r31, 5
+0000d1 f049                      	breq d_5
+0000d2 30f6                      	cpi r31, 6
+0000d3 f059                      	breq d_6
+0000d4 30f7                      	cpi r31, 7
+0000d5 f069                      	breq d_7
+0000d6 30f8                      	cpi r31, 8
+0000d7 f079                      	breq d_8
+0000d8 30f9                      	cpi r31, 9
+0000d9 f089                      	breq d_9
+0000da 9508                      ret
                                  d_5:
-0000c6 9100 0110                 	lds R16, LUT+16
-0000c8 df9c                      	rcall display
-0000c9 9508                      ret
+0000db 9100 0110                 	lds R16, LUT+16
+0000dd df9c                      	rcall display
+0000de 9508                      ret
                                  d_6:
-0000ca 9100 0111                 	lds R16, LUT+17
-0000cc df98                      	rcall display
-0000cd 9508                      ret
+0000df 9100 0111                 	lds R16, LUT+17
+0000e1 df98                      	rcall display
+0000e2 9508                      ret
                                  d_7:
-0000ce 9100 0112                 	lds R16, LUT+18
-0000d0 df94                      	rcall display
-0000d1 9508                      ret
+0000e3 9100 0112                 	lds R16, LUT+18
+0000e5 df94                      	rcall display
+0000e6 9508                      ret
                                  d_8:
-0000d2 9100 0113                 	lds R16, LUT+19
-0000d4 df90                      	rcall display
-0000d5 9508                      ret
+0000e7 9100 0113                 	lds R16, LUT+19
+0000e9 df90                      	rcall display
+0000ea 9508                      ret
                                  d_9:
-0000d6 9100 0114                 	lds R16, LUT+20
-0000d8 df8c                      	rcall display
-0000d9 9508                      ret
+0000eb 9100 0114                 	lds R16, LUT+20
+0000ed df8c                      	rcall display
+0000ee 9508                      ret
                                  
                                  ;------------------------------------------------------------------
                                  ;------------------------------------------------------------------
                                  debounce:
-0000da e030                      	ldi  r19, 0 ;Tracks 1s
-0000db e040                          ldi  r20, 0 ;Tracks 0s
-0000dc e07a                          ldi  r23, 10 ;Loop Count
-0000dd e080                      	ldi  r24, 0 
-0000de 957a                      L5: dec  r23
-0000df 9b1b                      	sbis PINB , 3
-0000e0 9543                      	inc r20
-0000e1 991b                      	sbic PINB, 3
-0000e2 9533                      	inc r19
-                                 	;rcall delay_shorter
-0000e3 f7d1                          brne L5
-0000e4 1734                      	cp r19, r20
-                                 	;brge pushed_A
-0000e5 9508                      ret
+0000ef e090                      	ldi  r25, 0 ;Tracks 1s
+0000f0 e080                          ldi  r24, 0 ;Tracks 0s
+0000f1 e07f                          ldi  r23, 15 ;Loop Count 1.5ms total. Min delay is 2.5ms so this is okay 
+0000f2 957a                      D1: dec  r23
+0000f3 9b1b                      	sbis PINB , 3
+0000f4 9593                      	inc r25
+0000f5 9b1c                      	sbis PINB, 4
+0000f6 9593                      	inc r25
+0000f7 991b                      	sbic PINB, 3
+0000f8 9583                      	inc r24
+0000f9 991c                      	sbic PINB, 4
+0000fa 9583                      	inc r24
+0000fb d00d                      	rcall delay_shorter
+0000fc f7a9                          brne D1
+0000fd 9508                      ret
                                  
-                                 
+                                 ; 1 ms delay
                                  delay_short:
-0000e6 e0a7                        ldi  r26, 7
-0000e7 efbf                          ldi  r27, 255
-0000e8 efcf                          ldi  r28, 255
-0000e9 95ca                      L2: dec  r28
-0000ea f7f1                          brne L2
-0000eb 95ba                          dec  r27
-0000ec f7e1                          brne L2
-0000ed 95aa                          dec  r26
-0000ee f7d1                          brne L2
-0000ef 0000                          nop
-0000f0 9508                      ret
+0000fe e0a7                        ldi  r26, 7
+0000ff efbf                          ldi  r27, 255
+000100 efcf                          ldi  r28, 255
+000101 95ca                      L1: dec  r28
+000102 f7f1                          brne L1
+000103 95ba                          dec  r27
+000104 f7e1                          brne L1
+000105 95aa                          dec  r26
+000106 f7d1                          brne L1
+000107 0000                          nop
+000108 9508                      ret
+                                 
+                                 ; .1 ms delay
+                                 delay_shorter:
+000109 e0a3                      	ldi  r26, 3
+00010a e1b3                          ldi  r27, 19
+00010b 95ba                      L2: dec  r27
+00010c f7f1                          brne L2
+00010d 95aa                          dec  r26
+00010e f7e1                          brne L2
+00010f 9508                      ret
                                  
 
 
@@ -1343,37 +1388,37 @@ counted separately from r26..r31 here.
 "ATmega328P" register use summary:
 x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  55 r17:   0 r18:   8 r19:   3 r20:   3 
-r21:   0 r22:   0 r23:   2 r24:   1 r25:   0 r26:   2 r27:   2 r28:   2 
+r13:   0 r14:   0 r15:   0 r16:  55 r17:   0 r18:   8 r19:   0 r20:   0 
+r21:   0 r22:   0 r23:   2 r24:   4 r25:   4 r26:   4 r27:   4 r28:   2 
 r29:   0 r30:  17 r31:  13 
-Registers used: 11 out of 35 (31.4%)
+Registers used: 10 out of 35 (28.6%)
 
 "ATmega328P" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   1 break :   0 breq  :  24 brge  :   0 brhc  :   0 
-brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
-brne  :   5 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brcc  :   0 brcs  :   1 break :   0 breq  :  23 brge  :   0 brhc  :   0 
+brhs  :   0 brid  :   0 brie  :   0 brlo  :   1 brlt  :   0 brmi  :   0 
+brne  :   7 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   6 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   1 cpc   :   0 
-cpi   :  22 cpse  :   0 dec   :   7 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   4 jmp   :   0 
-ld    :   0 ldd   :   0 ldi   :  33 lds   :  10 lpm   :   0 lsl   :   0 
+cpi   :  22 cpse  :   0 dec   :   9 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   6 jmp   :   0 
+ld    :   0 ldd   :   0 ldi   :  34 lds   :  10 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   1 or    :   0 ori   :   0 out   :   1 pop   :   3 
-push  :   3 rcall :  22 ret   :  19 reti  :   0 rjmp  :  11 rol   :   1 
-ror   :   0 sbc   :   0 sbci  :   0 sbi   :   6 sbic  :   4 sbis  :   4 
+push  :   3 rcall :  30 ret   :  20 reti  :   0 rjmp  :  21 rol   :   1 
+ror   :   0 sbc   :   0 sbci  :   0 sbi   :   6 sbic  :   6 sbis  :   7 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :  21 
 sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 23 out of 113 (20.4%)
+Instructions used: 24 out of 113 (21.2%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0001e2    482      0    482   32768   1.5%
+[.cseg] 0x000000 0x000220    544      0    544   32768   1.7%
 [.dseg] 0x000100 0x000117      0     23     23    2048   1.1%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
