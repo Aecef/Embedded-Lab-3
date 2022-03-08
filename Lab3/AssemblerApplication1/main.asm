@@ -121,21 +121,26 @@ f1:
 		rjmp check_debounce_B
 rjmp f1 ; Otherwise go back to the start of f1
 
+; Send to check for debounce for incrementing display
 check_debounce_A:
 	sbis PINB, 4
 	rjmp zero_zero_state
 	rjmp f1
+
+; Send to check for debounce for decrementing display
 check_debounce_B:
 	sbis PINB, 3
 	rjmp zero_zero_state
 	rjmp f1
 
+; Find out if the button is in the 00 state with a debounce and determine if display needs to be updated
 zero_zero_state:
-	rcall debounce
+	rcall debounce_rpg
 	cp r24, r25
 	brlo rpg_active
 	rjmp f1
 
+; Determine if the display is incrementing or decrementing, branch to correct function
 rpg_active:
 	sbic PINB, 4
 		rjmp inc_display
@@ -143,17 +148,71 @@ rpg_active:
 		rjmp dec_display
 	rjmp rpg_active
 
+; Incrementing display code
 inc_display:
+	cpi r31, 9
+	breq check_99
 	rcall increment_right
 	rcall count1
 	rcall count2
 	rjmp f1
 
+; Checks if display is at 99. If so, don't increment
+check_99:
+	cpi r30, 9
+		breq go_f1
+	rcall increment_right
+	rcall count1
+	rcall count2
+	rjmp f1
+
+; Go back to f1
+go_f1:
+rjmp f1 
+
+; Decrementing display code
 dec_display:
+	cpi r31, 0
+		breq check_00
 	rcall decrement_right
 	rcall count1
 	rcall count2
 	rjmp f1
+
+; Checks if display is at 00. If so, don't decrement
+check_00:
+	cpi r30, 0
+		breq go_f1
+	rcall decrement_right
+	rcall count1
+	rcall count2
+	rjmp f1
+
+; Increments rightmost digit
+increment_right:
+	inc r30
+	cpi r30, 10
+	breq increment_left
+ret
+
+; Increments leftmost digit
+increment_left:
+	ldi r30, 0
+	inc r31
+ret
+
+; Decrements rightmost digit
+decrement_right:
+	cpi r30, 0
+	breq decrement_left
+	dec r30
+ret
+
+; Decrements leftmost digit
+decrement_left:
+	ldi r30, 9
+	dec r31
+ret
 
 ;-----------------------------------------------------------------
 ; Display Digits
@@ -189,26 +248,6 @@ pop R18
 out SREG, R18
 pop R18
 pop R16
-ret
-
-; Increment and Decrement functions for left and right digits
-increment_right:
-	inc r30
-	cpi r30, 10
-	breq increment_left
-ret
-increment_left:
-	ldi r30, 0
-	inc r31
-ret
-decrement_right:
-	cpi r30, 0
-	breq decrement_left
-	dec r30
-ret
-decrement_left:
-	ldi r30, 9
-	dec r31
 ret
 
 ;------------------------------------------------------------------
@@ -301,10 +340,10 @@ ret
 
 ;------------------------------------------------------------------
 ;------------------------------------------------------------------
-debounce:
+debounce_rpg:
 	ldi  r25, 0 ;Tracks 1s
     ldi  r24, 0 ;Tracks 0s
-    ldi  r23, 15 ;Loop Count 1.5ms total. Min delay is 2.5ms so this is okay 
+    ldi  r23, 20 ;Loop Count 1.5ms total. Min delay is 2.5ms so this is okay 
 D1: dec  r23
 	sbis PINB , 3
 	inc r25
