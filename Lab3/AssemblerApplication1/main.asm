@@ -106,39 +106,55 @@ sts LUT+19, R16
 ldi R16, 0b11111100
 sts LUT+20, R16
 
-;------------------------------------------------------------------
-; Setup MODE A
-;------------------------------------------------------------------
-setup_f1:
-	ldi r31, 0 ; Leftmost digit
-	ldi r30, 0 ; Rightmost digit
-	rcall count1
-	rcall count2
-f1:
+; MODE Td. Functions before Td called on startup and are default calls
+ldi r31, 0 ; Leftmost digit
+ldi r30, 0 ; Rightmost digit
+sbi PORTB, 5 ; Turn on pullup resistor for pushbutton
+rcall count1 ; Push rightmost digit
+rcall count2 ; Push leftmost digit
+setup_td:
+;rcall count1
+;rcall count2
+sbis PINB,5
+rjmp setup_td
+td:
+	sbis PINB, 5
+		rjmp check_debounce_pushbutton_td
 	sbis PINB, 4
 		rjmp check_debounce_A
 	sbis PINB, 3
 		rjmp check_debounce_B
-rjmp f1 ; Otherwise go back to the start of f1
+rjmp td ; Otherwise go back to the start of f1
+
+; Check if button is pressed with debounce
+check_debounce_pushbutton_td:
+	rcall debounce_pushbutton
+	cp r24, r25
+	brlo pushbutton_pressed_td
+	rjmp td
+
+; Pushbutton is pressed so switch to MODE Tc
+pushbutton_pressed_td:
+	rjmp setup_tc
 
 ; Send to check for debounce for incrementing display
 check_debounce_A:
 	sbis PINB, 4
 	rjmp zero_zero_state
-	rjmp f1
+	rjmp td
 
 ; Send to check for debounce for decrementing display
 check_debounce_B:
 	sbis PINB, 3
 	rjmp zero_zero_state
-	rjmp f1
+	rjmp td
 
 ; Find out if the button is in the 00 state with a debounce and determine if display needs to be updated
 zero_zero_state:
 	rcall debounce_rpg
 	cp r24, r25
 	brlo rpg_active
-	rjmp f1
+	rjmp td
 
 ; Determine if the display is incrementing or decrementing, branch to correct function
 rpg_active:
@@ -155,20 +171,16 @@ inc_display:
 	rcall increment_right
 	rcall count1
 	rcall count2
-	rjmp f1
+	rjmp td
 
 ; Checks if display is at 99. If so, don't increment
 check_99:
 	cpi r30, 9
-		breq go_f1
+		breq td
 	rcall increment_right
 	rcall count1
 	rcall count2
-	rjmp f1
-
-; Go back to f1
-go_f1:
-rjmp f1 
+	rjmp td
 
 ; Decrementing display code
 dec_display:
@@ -177,16 +189,16 @@ dec_display:
 	rcall decrement_right
 	rcall count1
 	rcall count2
-	rjmp f1
+	rjmp td
 
 ; Checks if display is at 00. If so, don't decrement
 check_00:
 	cpi r30, 0
-		breq go_f1
+		breq td
 	rcall decrement_right
 	rcall count1
 	rcall count2
-	rjmp f1
+	rjmp td
 
 ; Increments rightmost digit
 increment_right:
@@ -338,14 +350,13 @@ d_9:
 	rcall display
 ret
 
-;------------------------------------------------------------------
-;------------------------------------------------------------------
+; Debounce for the rpg
 debounce_rpg:
 	ldi  r25, 0 ;Tracks 1s
     ldi  r24, 0 ;Tracks 0s
     ldi  r23, 20 ;Loop Count 1.5ms total. Min delay is 2.5ms so this is okay 
 D1: dec  r23
-	sbis PINB , 3
+	sbis PINB, 3
 	inc r25
 	sbis PINB, 4
 	inc r25
@@ -355,6 +366,20 @@ D1: dec  r23
 	inc r24
 	rcall delay_shorter
     brne D1
+ret
+
+; Debounce for the pushbutton
+debounce_pushbutton:
+	ldi r25, 0
+	ldi r24, 0
+	ldi r23, 15
+D2: dec r23
+	sbis PINB, 5
+	inc r25
+	sbic PINB, 5
+	inc r24
+	rcall delay_shorter
+	brne D2
 ret
 
 ; 1 ms delay
@@ -379,5 +404,117 @@ L2: dec  r27
     brne L2
     dec  r26
     brne L2
+ret
+
+; MODE Tc
+setup_tc:
+	ldi r22, 0 ; Leftmost digit for tc
+	ldi r21, 0 ; Rightmost digit for tc
+	rcall count3
+	rcall count4
+	sbis PINB, 5
+	rjmp setup_tc
+tc:
+	sbis PINB, 5
+	rjmp check_debounce_pushbutton_tc
+
+rjmp tc
+
+; Check if button is pressed with debounce
+check_debounce_pushbutton_tc:
+	rcall debounce_pushbutton
+	cp r24, r25
+	brlo pushbutton_pressed_tc
+	rjmp tc
+
+pushbutton_pressed_tc:
+	rcall count1 ; Do this here to prevent lag
+	rcall count2
+	rjmp setup_td
+
+n_0:
+	lds R16, LUT
+	rcall display
+ret
+n_1:
+	lds R16, LUT+1
+	rcall display
+ret
+n_2:
+	lds R16, LUT+2
+	rcall display
+ret
+n_3:
+	lds R16, LUT+3
+	rcall display
+ret
+n_4:
+	lds R16, LUT+4
+	rcall display
+ret
+
+count3:
+	cpi r21, 0
+	breq n_0
+	cpi r21, 1
+	breq n_1
+	cpi r21, 2
+	breq n_2
+	cpi r21, 3
+	breq n_3
+	cpi r21, 4
+	breq n_4
+	cpi r21, 5
+	breq n_5
+	cpi r21, 6
+	breq n_6
+	cpi r21, 7
+	breq n_7
+	cpi r21, 8
+	breq n_8
+	cpi r21, 9
+	breq n_9
+ret
+count4:
+	cpi r22, 0
+	breq n_0
+	cpi r22, 1
+	breq n_1
+	cpi r22, 2
+	breq n_2
+	cpi r22, 3
+	breq n_3
+	cpi r22, 4
+	breq n_4
+	cpi r22, 5
+	breq n_5
+	cpi r22, 6
+	breq n_6
+	cpi r22, 7
+	breq n_7
+	cpi r22, 8
+	breq n_8
+	cpi r22, 9
+	breq n_9
+ret
+n_5:
+	lds R16, LUT+5
+	rcall display
+ret
+n_6:
+	lds R16, LUT+6
+	rcall display
+ret
+n_7:
+	lds R16, LUT+7
+	rcall display
+ret
+n_8:
+	lds R16, LUT+8
+	rcall display
+ret
+n_9:
+	lds R16, LUT+9
+	rcall display
 ret
 
