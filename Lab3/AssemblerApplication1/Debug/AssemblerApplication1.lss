@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\brewe\Documents\GitHub\Embedded-Lab-3\Lab3\AssemblerApplication1\main.asm Mon Mar 07 21:58:27 2022
+AVRASM ver. 2.2.8  C:\Users\brewe\Documents\GitHub\Embedded-Lab-3\Lab3\AssemblerApplication1\main.asm Wed Mar 09 13:04:40 2022
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\avrasm\inc\m328Pdef.inc'
@@ -998,8 +998,10 @@ AVRASM ver. 2.2.8  C:\Users\brewe\Documents\GitHub\Embedded-Lab-3\Lab3\Assembler
 000003 9823                      cbi DDRB, 3 ; Signal A
 000004 9824                      cbi DDRB, 4 ; Signal B
 000005 9825                      cbi DDRB, 5 ; Pushbutton
+000006 9855                      cbi DDRD, 5
                                  
-                                 
+000007 e0a3                      ldi r26, 0x03
+000008 bda5                      out TCCR0B, r26
                                  
                                  ; start main program
                                  .dseg
@@ -1007,436 +1009,429 @@ AVRASM ver. 2.2.8  C:\Users\brewe\Documents\GitHub\Embedded-Lab-3\Lab3\Assembler
 000100                           LUT: .byte 23 ; Need 1-9 with periods and without, plus the dash for output and a Nothing case (all lights are off)
                                  .cseg
                                  
-                                 
                                  ; Display 0.
-000006 ee0b                      ldi R16, 0b11101011
-000007 9300 0100                 sts LUT, R16
+000009 ee0b                      ldi R16, 0b11101011
+00000a 9300 0100                 sts LUT, R16
                                  
                                  ; Display 1.
-000009 e408                      ldi R16, 0b01001000
-00000a 9300 0101                 sts LUT+1, R16
+00000c e408                      ldi R16, 0b01001000
+00000d 9300 0101                 sts LUT+1, R16
                                  
                                  ; Display 2.
-00000c ed03                      ldi R16, 0b11010011
-00000d 9300 0102                 sts LUT+2, R16
+00000f ed03                      ldi R16, 0b11010011
+000010 9300 0102                 sts LUT+2, R16
                                  
                                  ; Display 3.
-00000f ed0a                      ldi R16, 0b11011010
-000010 9300 0103                 sts LUT+3, R16
+000012 ed0a                      ldi R16, 0b11011010
+000013 9300 0103                 sts LUT+3, R16
                                  
                                  ; Display 4.
-000012 e708                      ldi R16, 0b01111000
-000013 9300 0104                 sts LUT+4, R16
+000015 e708                      ldi R16, 0b01111000
+000016 9300 0104                 sts LUT+4, R16
                                  
                                  ; Display 5.
-000015 eb0a                      ldi R16, 0b10111010
-000016 9300 0105                 sts LUT+5, R16
+000018 eb0a                      ldi R16, 0b10111010
+000019 9300 0105                 sts LUT+5, R16
                                  
                                  ; Display 6.
-000018 e30b                      ldi R16, 0b00111011
-000019 9300 0106                 sts LUT+6, R16
+00001b e30b                      ldi R16, 0b00111011
+00001c 9300 0106                 sts LUT+6, R16
                                  
                                  ; Display 7.
-00001b ec08                      ldi R16, 0b11001000
-00001c 9300 0107                 sts LUT+7, R16
+00001e ec08                      ldi R16, 0b11001000
+00001f 9300 0107                 sts LUT+7, R16
                                  
                                  ; Display 8.
-00001e ef0b                      ldi R16, 0b11111011
-00001f 9300 0108                 sts LUT+8, R16
+000021 ef0b                      ldi R16, 0b11111011
+000022 9300 0108                 sts LUT+8, R16
                                  
                                  ; Display 9.
-000021 ef08                      ldi R16, 0b11111000
-000022 9300 0109                 sts LUT+9, R16
+000024 ef08                      ldi R16, 0b11111000
+000025 9300 0109                 sts LUT+9, R16
                                  
                                  ; Display Dash
-000024 e008                      ldi R16, 0b00001000
-000025 9300 010a                 sts LUT+10, R16
+000027 e008                      ldi R16, 0b00001000
+000028 9300 010a                 sts LUT+10, R16
                                  
                                  ; Display 0
-000027 ee0f                      ldi R16, 0b11101111
-000028 9300 010b                 sts LUT+11, R16
+00002a ee0f                      ldi R16, 0b11101111
+00002b 9300 010b                 sts LUT+11, R16
                                  
                                  ; Display 1
-00002a e40c                      ldi R16, 0b01001100
-00002b 9300 010c                 sts LUT+12, R16
+00002d e40c                      ldi R16, 0b01001100
+00002e 9300 010c                 sts LUT+12, R16
                                  
                                  ; Display 2
-00002d ed07                      ldi R16, 0b11010111
-00002e 9300 010d                 sts LUT+13, R16
+000030 ed07                      ldi R16, 0b11010111
+000031 9300 010d                 sts LUT+13, R16
                                  
                                  ; Display 3
-000030 ed0e                      ldi R16, 0b11011110
-000031 9300 010e                 sts LUT+14, R16
+000033 ed0e                      ldi R16, 0b11011110
+000034 9300 010e                 sts LUT+14, R16
                                  
                                  ; Display 4
-000033 e70c                      ldi R16, 0b01111100
-000034 9300 010f                 sts LUT+15, R16
+000036 e70c                      ldi R16, 0b01111100
+000037 9300 010f                 sts LUT+15, R16
                                  
                                  ; Display 5
-000036 eb0e                      ldi R16, 0b10111110
-000037 9300 0110                 sts LUT+16, R16
+000039 eb0e                      ldi R16, 0b10111110
+00003a 9300 0110                 sts LUT+16, R16
                                  
                                  ; Display 6
-000039 e30f                      ldi R16, 0b00111111
-00003a 9300 0111                 sts LUT+17, R16
+00003c e30f                      ldi R16, 0b00111111
+00003d 9300 0111                 sts LUT+17, R16
                                  
                                  ; Display 7
-00003c ec0c                      ldi R16, 0b11001100
-00003d 9300 0112                 sts LUT+18, R16
+00003f ec0c                      ldi R16, 0b11001100
+000040 9300 0112                 sts LUT+18, R16
                                  
                                  ; Display 8
-00003f ef0f                      ldi R16, 0b11111111
-000040 9300 0113                 sts LUT+19, R16
+000042 ef0f                      ldi R16, 0b11111111
+000043 9300 0113                 sts LUT+19, R16
                                  
                                  ; Display 9
-000042 ef0c                      ldi R16, 0b11111100
-000043 9300 0114                 sts LUT+20, R16
+000045 ef0c                      ldi R16, 0b11111100
+000046 9300 0114                 sts LUT+20, R16
                                  
                                  ; MODE Td. Functions before Td called on startup and are default calls
-000045 e0f0                      ldi r31, 0 ; Leftmost digit
-000046 e0e0                      ldi r30, 0 ; Rightmost digit
-000047 9a2d                      sbi PORTB, 5 ; Turn on pullup resistor for pushbutton
-000048 d06d                      rcall count1 ; Push rightmost digit
-000049 d081                      rcall count2 ; Push leftmost digit
+000048 e010                      ldi r17, 0 ; Leftmost digit
+000049 e0c0                      ldi r28, 0 ; Rightmost digit
+00004a 9a2d                      sbi PORTB, 5 ; Turn on pullup resistor for pushbutton
+00004b d070                      rcall count1 ; Push rightmost digit
+00004c d084                      rcall count2 ; Push leftmost digit
                                  setup_td:
-                                 ;rcall count1
-                                 ;rcall count2
-00004a 9b1d                      sbis PINB,5
-00004b cffe                      rjmp setup_td
+00004d d06e                      rcall count1
+00004e d082                      rcall count2
+00004f 9b1d                      sbis PINB,5
+000050 cffc                      rjmp setup_td
+                                 
                                  td:
-00004c 9b1d                      	sbis PINB, 5
-00004d c005                      		rjmp check_debounce_pushbutton_td
-00004e 9b1c                      	sbis PINB, 4
-00004f c008                      		rjmp check_debounce_A
-000050 9b1b                      	sbis PINB, 3
-000051 c009                      		rjmp check_debounce_B
-000052 cff9                      rjmp td ; Otherwise go back to the start of f1
+000051 9b1d                      	sbis PINB, 5
+000052 c005                      		rjmp check_debounce_pushbutton_td
+000053 9b1c                      	sbis PINB, 4
+000054 c009                      		rjmp check_debounce_A
+000055 9b1b                      	sbis PINB, 3
+000056 c00a                      		rjmp check_debounce_B
+000057 cff9                      rjmp td ; Otherwise go back to the start of f1
                                  
                                  ; Check if button is pressed with debounce
                                  check_debounce_pushbutton_td:
-000053 d0af                      	rcall debounce_pushbutton
-000054 1789                      	cp r24, r25
-000055 f008                      	brlo pushbutton_pressed_td
-000056 cff5                      	rjmp td
+000058 d0b0                      	rcall debounce_pushbutton
+000059 1789                      	cp r24, r25
+00005a f008                      	brlo pushbutton_pressed_td
+00005b cff5                      	rjmp td
                                  
                                  ; Pushbutton is pressed so switch to MODE Tc
                                  pushbutton_pressed_td:
-000057 c0c8                      	rjmp setup_tc
+00005c d0b7                      	rcall delay_shorter
+00005d c0bd                      	rjmp setup_tc
                                  
                                  ; Send to check for debounce for incrementing display
                                  check_debounce_A:
-000058 9b1c                      	sbis PINB, 4
-000059 c004                      	rjmp zero_zero_state
-00005a cff1                      	rjmp td
+00005e 9b1c                      	sbis PINB, 4
+00005f c004                      	rjmp zero_zero_state
+000060 cff0                      	rjmp td
                                  
                                  ; Send to check for debounce for decrementing display
                                  check_debounce_B:
-00005b 9b1b                      	sbis PINB, 3
-00005c c001                      	rjmp zero_zero_state
-00005d cfee                      	rjmp td
+000061 9b1b                      	sbis PINB, 3
+000062 c001                      	rjmp zero_zero_state
+000063 cfed                      	rjmp td
                                  
                                  ; Find out if the button is in the 00 state with a debounce and determine if display needs to be updated
                                  zero_zero_state:
-00005e d095                      	rcall debounce_rpg
-00005f 1789                      	cp r24, r25
-000060 f008                      	brlo rpg_active
-000061 cfea                      	rjmp td
+000064 d095                      	rcall debounce_rpg
+000065 1789                      	cp r24, r25
+000066 f008                      	brlo rpg_active
+000067 cfe9                      	rjmp td
                                  
                                  ; Determine if the display is incrementing or decrementing, branch to correct function
                                  rpg_active:
-000062 991c                      	sbic PINB, 4
-000063 c003                      		rjmp inc_display
-000064 991b                      	sbic PINB, 3
-000065 c00d                      		rjmp dec_display
-000066 cffb                      	rjmp rpg_active
+000068 991c                      	sbic PINB, 4
+000069 c003                      		rjmp inc_display
+00006a 991b                      	sbic PINB, 3
+00006b c00d                      		rjmp dec_display
+00006c cffb                      	rjmp rpg_active
                                  
                                  ; Incrementing display code
                                  inc_display:
-000067 30f9                      	cpi r31, 9
-000068 f021                      	breq check_99
-000069 d015                      	rcall increment_right
-00006a d04b                      	rcall count1
-00006b d05f                      	rcall count2
-00006c cfdf                      	rjmp td
+00006d 3019                      	cpi r17, 9
+00006e f021                      	breq check_99
+00006f d015                      	rcall increment_right
+000070 d04b                      	rcall count1
+000071 d05f                      	rcall count2
+000072 cfde                      	rjmp td
                                  
                                  ; Checks if display is at 99. If so, don't increment
                                  check_99:
-00006d 30e9                      	cpi r30, 9
-00006e f2e9                      		breq td
-00006f d00f                      	rcall increment_right
-000070 d045                      	rcall count1
-000071 d059                      	rcall count2
-000072 cfd9                      	rjmp td
+000073 30c9                      	cpi r28, 9
+000074 f2e1                      		breq td
+000075 d00f                      	rcall increment_right
+000076 d045                      	rcall count1
+000077 d059                      	rcall count2
+000078 cfd8                      	rjmp td
                                  
                                  ; Decrementing display code
                                  dec_display:
-000073 30f0                      	cpi r31, 0
-000074 f021                      		breq check_00
-000075 d010                      	rcall decrement_right
-000076 d03f                      	rcall count1
-000077 d053                      	rcall count2
-000078 cfd3                      	rjmp td
+000079 3010                      	cpi r17, 0
+00007a f021                      		breq check_00
+00007b d010                      	rcall decrement_right
+00007c d03f                      	rcall count1
+00007d d053                      	rcall count2
+00007e cfd2                      	rjmp td
                                  
                                  ; Checks if display is at 00. If so, don't decrement
                                  check_00:
-000079 30e0                      	cpi r30, 0
-00007a f289                      		breq td
-00007b d00a                      	rcall decrement_right
-00007c d039                      	rcall count1
-00007d d04d                      	rcall count2
-00007e cfcd                      	rjmp td
+00007f 30c0                      	cpi r28, 0
+000080 f281                      		breq td
+000081 d00a                      	rcall decrement_right
+000082 d039                      	rcall count1
+000083 d04d                      	rcall count2
+000084 cfcc                      	rjmp td
                                  
                                  ; Increments rightmost digit
                                  increment_right:
-00007f 95e3                      	inc r30
-000080 30ea                      	cpi r30, 10
-000081 f009                      	breq increment_left
-000082 9508                      ret
+000085 95c3                      	inc r28
+000086 30ca                      	cpi r28, 10
+000087 f009                      	breq increment_left
+000088 9508                      ret
                                  
                                  ; Increments leftmost digit
                                  increment_left:
-000083 e0e0                      	ldi r30, 0
-000084 95f3                      	inc r31
-000085 9508                      ret
+000089 e0c0                      	ldi r28, 0
+00008a 9513                      	inc r17
+00008b 9508                      ret
                                  
                                  ; Decrements rightmost digit
                                  decrement_right:
-000086 30e0                      	cpi r30, 0
-000087 f011                      	breq decrement_left
-000088 95ea                      	dec r30
-000089 9508                      ret
+00008c 30c0                      	cpi r28, 0
+00008d f011                      	breq decrement_left
+00008e 95ca                      	dec r28
+00008f 9508                      ret
                                  
                                  ; Decrements leftmost digit
                                  decrement_left:
-00008a e0e9                      	ldi r30, 9
-00008b 95fa                      	dec r31
-00008c 9508                      ret
+000090 e0c9                      	ldi r28, 9
+000091 951a                      	dec r17
+000092 9508                      ret
                                  
                                  ;-----------------------------------------------------------------
                                  ; Display Digits
                                  ;------------------------------------------------------------------
                                  ; to display for two digits, need to run display function twice. The first display call places the rightmost digit, the latter does the leftmost digit. 
                                  display: 
-00008d 930f                      push R16 ; Put R16 on stack
-00008e 932f                      push R18 ; Put R18 on stack
-00008f b72f                      in R18, SREG
-000090 932f                      push R18
+000093 930f                      push R16 ; Put R16 on stack
+000094 932f                      push R18 ; Put R18 on stack
+000095 b72f                      in R18, SREG
+000096 932f                      push R18
                                  
-000091 e028                      ldi R18, 8 ; Loop --> test all 8 bits
+000097 e028                      ldi R18, 8 ; Loop --> test all 8 bits
                                  loop:
-000092 1f00                      	rol R16 ; Rotate left through Carry
-000093 f010                      	brcs set_ser_in_1 ; Branch if Carry is set;
-000094 9828                      	cbi PORTB, 0 ; Set SER to 0
-000095 c001                      	rjmp end
+000098 1f00                      	rol R16 ; Rotate left through Carry
+000099 f010                      	brcs set_ser_in_1 ; Branch if Carry is set;
+00009a 9828                      	cbi PORTB, 0 ; Set SER to 0
+00009b c001                      	rjmp end
                                  
                                  set_ser_in_1:
-000096 9a28                      	sbi PORTB, 0 ; Set SER to 1
+00009c 9a28                      	sbi PORTB, 0 ; Set SER to 1
                                  
                                  end:
-000097 9a29                      sbi PORTB, 1 ; Set SRCK to 1
-000098 9829                      cbi PORTB, 1 ; Set SRCK to 0
-000099 952a                      dec R18
-00009a f7b9                      brne loop
+00009d 9a29                      sbi PORTB, 1 ; Set SRCK to 1
+00009e 9829                      cbi PORTB, 1 ; Set SRCK to 0
+00009f 952a                      dec R18
+0000a0 f7b9                      brne loop
                                  
-00009b 9a2a                      sbi PORTB, 2 ; Set RCLK to 1
-00009c 982a                      cbi PORTB, 2 ; Set RCLE to 0
+0000a1 9a2a                      sbi PORTB, 2 ; Set RCLK to 1
+0000a2 982a                      cbi PORTB, 2 ; Set RCLE to 0
                                  
                                  ; restore registers from stack
-00009d 912f                      pop R18
-00009e bf2f                      out SREG, R18
-00009f 912f                      pop R18
-0000a0 910f                      pop R16
-0000a1 9508                      ret
+0000a3 912f                      pop R18
+0000a4 bf2f                      out SREG, R18
+0000a5 912f                      pop R18
+0000a6 910f                      pop R16
+0000a7 9508                      ret
                                  
                                  ;------------------------------------------------------------------
                                  ; Count functions decide which digit to display and display it
                                  ;------------------------------------------------------------------
                                  d_0:
-0000a2 9100 010b                 	lds R16, LUT+11
-0000a4 dfe8                      	rcall display
-0000a5 9508                      ret
+0000a8 9100 010b                 	lds R16, LUT+11
+0000aa dfe8                      	rcall display
+0000ab 9508                      ret
                                  d_1:
-0000a6 9100 010c                 	lds R16, LUT+12
-0000a8 dfe4                      	rcall display
-0000a9 9508                      ret
+0000ac 9100 010c                 	lds R16, LUT+12
+0000ae dfe4                      	rcall display
+0000af 9508                      ret
                                  d_2:
-0000aa 9100 010d                 	lds R16, LUT+13
-0000ac dfe0                      	rcall display
-0000ad 9508                      ret
+0000b0 9100 010d                 	lds R16, LUT+13
+0000b2 dfe0                      	rcall display
+0000b3 9508                      ret
                                  d_3:
-0000ae 9100 010e                 	lds R16, LUT+14
-0000b0 dfdc                      	rcall display
-0000b1 9508                      ret
+0000b4 9100 010e                 	lds R16, LUT+14
+0000b6 dfdc                      	rcall display
+0000b7 9508                      ret
                                  d_4:
-0000b2 9100 010f                 	lds R16, LUT+15
-0000b4 dfd8                      	rcall display
-0000b5 9508                      ret
+0000b8 9100 010f                 	lds R16, LUT+15
+0000ba dfd8                      	rcall display
+0000bb 9508                      ret
                                  count1:
-0000b6 30e0                      	cpi r30, 0
-0000b7 f351                      	breq d_0
-0000b8 30e1                      	cpi r30, 1
-0000b9 f361                      	breq d_1
-0000ba 30e2                      	cpi r30, 2
-0000bb f371                      	breq d_2
-0000bc 30e3                      	cpi r30, 3
-0000bd f381                      	breq d_3
-0000be 30e4                      	cpi r30, 4
-0000bf f391                      	breq d_4
-0000c0 30e5                      	cpi r30, 5
-0000c1 f0f1                      	breq d_5
-0000c2 30e6                      	cpi r30, 6
-0000c3 f101                      	breq d_6
-0000c4 30e7                      	cpi r30, 7
-0000c5 f111                      	breq d_7
-0000c6 30e8                      	cpi r30, 8
-0000c7 f121                      	breq d_8
-0000c8 30e9                      	cpi r30, 9
-0000c9 f131                      	breq d_9
-0000ca 9508                      ret
+0000bc 30c0                      	cpi r28, 0
+0000bd f351                      	breq d_0
+0000be 30c1                      	cpi r28, 1
+0000bf f361                      	breq d_1
+0000c0 30c2                      	cpi r28, 2
+0000c1 f371                      	breq d_2
+0000c2 30c3                      	cpi r28, 3
+0000c3 f381                      	breq d_3
+0000c4 30c4                      	cpi r28, 4
+0000c5 f391                      	breq d_4
+0000c6 30c5                      	cpi r28, 5
+0000c7 f0f1                      	breq d_5
+0000c8 30c6                      	cpi r28, 6
+0000c9 f101                      	breq d_6
+0000ca 30c7                      	cpi r28, 7
+0000cb f111                      	breq d_7
+0000cc 30c8                      	cpi r28, 8
+0000cd f121                      	breq d_8
+0000ce 30c9                      	cpi r28, 9
+0000cf f131                      	breq d_9
+0000d0 9508                      ret
                                  count2:
-0000cb 30f0                      	cpi r31, 0
-0000cc f2a9                      	breq d_0
-0000cd 30f1                      	cpi r31, 1
-0000ce f2b9                      	breq d_1
-0000cf 30f2                      	cpi r31, 2
-0000d0 f2c9                      	breq d_2
-0000d1 30f3                      	cpi r31, 3
-0000d2 f2d9                      	breq d_3
-0000d3 30f4                      	cpi r31, 4
-0000d4 f2e9                      	breq d_4
-0000d5 30f5                      	cpi r31, 5
-0000d6 f049                      	breq d_5
-0000d7 30f6                      	cpi r31, 6
-0000d8 f059                      	breq d_6
-0000d9 30f7                      	cpi r31, 7
-0000da f069                      	breq d_7
-0000db 30f8                      	cpi r31, 8
-0000dc f079                      	breq d_8
-0000dd 30f9                      	cpi r31, 9
-0000de f089                      	breq d_9
-0000df 9508                      ret
+0000d1 3010                      	cpi r17, 0
+0000d2 f2a9                      	breq d_0
+0000d3 3011                      	cpi r17, 1
+0000d4 f2b9                      	breq d_1
+0000d5 3012                      	cpi r17, 2
+0000d6 f2c9                      	breq d_2
+0000d7 3013                      	cpi r17, 3
+0000d8 f2d9                      	breq d_3
+0000d9 3014                      	cpi r17, 4
+0000da f2e9                      	breq d_4
+0000db 3015                      	cpi r17, 5
+0000dc f049                      	breq d_5
+0000dd 3016                      	cpi r17, 6
+0000de f059                      	breq d_6
+0000df 3017                      	cpi r17, 7
+0000e0 f069                      	breq d_7
+0000e1 3018                      	cpi r17, 8
+0000e2 f079                      	breq d_8
+0000e3 3019                      	cpi r17, 9
+0000e4 f089                      	breq d_9
+0000e5 9508                      ret
                                  d_5:
-0000e0 9100 0110                 	lds R16, LUT+16
-0000e2 dfaa                      	rcall display
-0000e3 9508                      ret
+0000e6 9100 0110                 	lds R16, LUT+16
+0000e8 dfaa                      	rcall display
+0000e9 9508                      ret
                                  d_6:
-0000e4 9100 0111                 	lds R16, LUT+17
-0000e6 dfa6                      	rcall display
-0000e7 9508                      ret
+0000ea 9100 0111                 	lds R16, LUT+17
+0000ec dfa6                      	rcall display
+0000ed 9508                      ret
                                  d_7:
-0000e8 9100 0112                 	lds R16, LUT+18
-0000ea dfa2                      	rcall display
-0000eb 9508                      ret
+0000ee 9100 0112                 	lds R16, LUT+18
+0000f0 dfa2                      	rcall display
+0000f1 9508                      ret
                                  d_8:
-0000ec 9100 0113                 	lds R16, LUT+19
-0000ee df9e                      	rcall display
-0000ef 9508                      ret
+0000f2 9100 0113                 	lds R16, LUT+19
+0000f4 df9e                      	rcall display
+0000f5 9508                      ret
                                  d_9:
-0000f0 9100 0114                 	lds R16, LUT+20
-0000f2 df9a                      	rcall display
-0000f3 9508                      ret
+0000f6 9100 0114                 	lds R16, LUT+20
+0000f8 df9a                      	rcall display
+0000f9 9508                      ret
                                  
                                  ; Debounce for the rpg
                                  debounce_rpg:
-0000f4 e090                      	ldi  r25, 0 ;Tracks 1s
-0000f5 e080                          ldi  r24, 0 ;Tracks 0s
-0000f6 e174                          ldi  r23, 20 ;Loop Count 1.5ms total. Min delay is 2.5ms so this is okay 
-0000f7 957a                      D1: dec  r23
-0000f8 9b1b                      	sbis PINB, 3
-0000f9 9593                      	inc r25
-0000fa 9b1c                      	sbis PINB, 4
-0000fb 9593                      	inc r25
-0000fc 991b                      	sbic PINB, 3
-0000fd 9583                      	inc r24
-0000fe 991c                      	sbic PINB, 4
-0000ff 9583                      	inc r24
-000100 d018                      	rcall delay_shorter
-000101 f7a9                          brne D1
-000102 9508                      ret
+0000fa e090                      	ldi  r25, 0 ;Tracks 1s
+0000fb e080                          ldi  r24, 0 ;Tracks 0s
+0000fc e174                          ldi  r23, 20 ;Loop Count 2ms total. Min delay is 2.5ms so this is okay 
+0000fd 957a                      D1: dec  r23
+0000fe 9b1b                      	sbis PINB, 3
+0000ff 9593                      	inc r25
+000100 9b1c                      	sbis PINB, 4
+000101 9593                      	inc r25
+000102 991b                      	sbic PINB, 3
+000103 9583                      	inc r24
+000104 991c                      	sbic PINB, 4
+000105 9583                      	inc r24
+000106 d00d                      	rcall delay_shorter
+000107 f7a9                          brne D1
+000108 9508                      ret
                                  
                                  ; Debounce for the pushbutton
                                  debounce_pushbutton:
-000103 e090                      	ldi r25, 0
-000104 e080                      	ldi r24, 0
-000105 e07f                      	ldi r23, 15
-000106 957a                      D2: dec r23
-000107 9b1d                      	sbis PINB, 5
-000108 9593                      	inc r25
-000109 991d                      	sbic PINB, 5
-00010a 9583                      	inc r24
-00010b d00d                      	rcall delay_shorter
-00010c f7c9                      	brne D2
-00010d 9508                      ret
-                                 
-                                 ; 1 ms delay
-                                 delay_short:
-00010e e0a7                        ldi  r26, 7
-00010f efbf                          ldi  r27, 255
-000110 efcf                          ldi  r28, 255
-000111 95ca                      L1: dec  r28
-000112 f7f1                          brne L1
-000113 95ba                          dec  r27
-000114 f7e1                          brne L1
-000115 95aa                          dec  r26
-000116 f7d1                          brne L1
-000117 0000                          nop
-000118 9508                      ret
+000109 e090                      	ldi r25, 0
+00010a e080                      	ldi r24, 0
+00010b e07f                      	ldi r23, 15
+00010c 957a                      D2: dec r23
+00010d 9b1d                      	sbis PINB, 5
+00010e 9593                      	inc r25
+00010f 991d                      	sbic PINB, 5
+000110 9583                      	inc r24
+000111 d002                      	rcall delay_shorter
+000112 f7c9                      	brne D2
+000113 9508                      ret
                                  
                                  ; .1 ms delay
                                  delay_shorter:
-000119 e0a3                      	ldi  r26, 3
-00011a e1b3                          ldi  r27, 19
-00011b 95ba                      L2: dec  r27
-00011c f7f1                          brne L2
-00011d 95aa                          dec  r26
-00011e f7e1                          brne L2
-00011f 9508                      ret
+000114 e0a3                      	ldi  r26, 3
+000115 e1b3                          ldi  r27, 19
+000116 95ba                      L2: dec  r27
+000117 f7f1                          brne L2
+000118 95aa                          dec  r26
+000119 f7e1                          brne L2
+00011a 9508                      ret
                                  
                                  ; MODE Tc
                                  setup_tc:
-000120 e060                      	ldi r22, 0 ; Leftmost digit for tc
-000121 e050                      	ldi r21, 0 ; Rightmost digit for tc
-000122 d021                      	rcall count3
-000123 d035                      	rcall count4
-000124 9b1d                      	sbis PINB, 5
-000125 cffa                      	rjmp setup_tc
-                                 tc:
-000126 9b1d                      	sbis PINB, 5
-000127 c001                      	rjmp check_debounce_pushbutton_tc
+00011b e060                      	ldi r22, 0 ; Leftmost digit for tc
+00011c e050                      	ldi r21, 0 ; Rightmost digit for tc
+00011d d026                      	rcall count3
+00011e d03a                      	rcall count4
+00011f 9b1d                      	sbis PINB, 5
+000120 cffa                      	rjmp setup_tc
                                  
-000128 cffd                      rjmp tc
+                                 tc:
+000121 9b1d                      	sbis PINB, 5
+000122 c005                      	rjmp check_debounce_pushbutton_tc
+000123 9a55                      	sbi DDRD, 5
+000124 985d                      	cbi PORTD, 5
+000125 d05c                      	rcall pull_low
+000126 9855                      	cbi DDRD, 5
+000127 c07a                      	rjmp stage1
+                                 
                                  
                                  ; Check if button is pressed with debounce
                                  check_debounce_pushbutton_tc:
-000129 dfd9                      	rcall debounce_pushbutton
-00012a 1789                      	cp r24, r25
-00012b f008                      	brlo pushbutton_pressed_tc
-00012c cff9                      	rjmp tc
+000128 dfe0                      	rcall debounce_pushbutton
+000129 1789                      	cp r24, r25
+00012a f008                      	brlo pushbutton_pressed_tc
+00012b cff5                      	rjmp tc
                                  
                                  pushbutton_pressed_tc:
-00012d df88                      	rcall count1 ; Do this here to prevent lag
-00012e df9c                      	rcall count2
-00012f cf1a                      	rjmp setup_td
+00012c df8f                      	rcall count1 ; Do this here to prevent lag
+00012d dfa3                      	rcall count2
+00012e dfe5                      	rcall delay_shorter
+00012f cf1d                      	rjmp setup_td
                                  
                                  n_0:
 000130 9100 0100                 	lds R16, LUT
-000132 df5a                      	rcall display
+000132 df60                      	rcall display
 000133 9508                      ret
                                  n_1:
 000134 9100 0101                 	lds R16, LUT+1
-000136 df56                      	rcall display
+000136 df5c                      	rcall display
 000137 9508                      ret
                                  n_2:
 000138 9100 0102                 	lds R16, LUT+2
-00013a df52                      	rcall display
+00013a df58                      	rcall display
 00013b 9508                      ret
                                  n_3:
 00013c 9100 0103                 	lds R16, LUT+3
-00013e df4e                      	rcall display
+00013e df54                      	rcall display
 00013f 9508                      ret
                                  n_4:
 000140 9100 0104                 	lds R16, LUT+4
-000142 df4a                      	rcall display
+000142 df50                      	rcall display
 000143 9508                      ret
                                  
                                  count3:
@@ -1485,24 +1480,314 @@ AVRASM ver. 2.2.8  C:\Users\brewe\Documents\GitHub\Embedded-Lab-3\Lab3\Assembler
 00016d 9508                      ret
                                  n_5:
 00016e 9100 0105                 	lds R16, LUT+5
-000170 df1c                      	rcall display
+000170 df22                      	rcall display
 000171 9508                      ret
                                  n_6:
 000172 9100 0106                 	lds R16, LUT+6
-000174 df18                      	rcall display
+000174 df1e                      	rcall display
 000175 9508                      ret
                                  n_7:
 000176 9100 0107                 	lds R16, LUT+7
-000178 df14                      	rcall display
+000178 df1a                      	rcall display
 000179 9508                      ret
                                  n_8:
 00017a 9100 0108                 	lds R16, LUT+8
-00017c df10                      	rcall display
+00017c df16                      	rcall display
 00017d 9508                      ret
                                  n_9:
 00017e 9100 0109                 	lds R16, LUT+9
-000180 df0c                      	rcall display
+000180 df12                      	rcall display
 000181 9508                      ret
+                                 
+                                 
+                                 pull_low:
+000182 e2e8                      	ldi r30, low(40)
+000183 e0f0                      	ldi r31, high(40)
+000184 d001                      	rcall delay_20ms 
+000185 9508                      	ret
+                                 	delay_20ms:
+000186 d003                      	rcall timer_delay20ms
+000187 9731                      	sbiw Z, 1
+000188 f7e9                      	brne delay_20ms
+000189 9508                      	ret
+                                 
+                                 
+                                 timer_delay20ms:
+00018a e6de                      	ldi r29, 110
+                                 	; Stop the timer
+00018b b545                      	in r20, TCCR0B
+00018c e030                      	ldi r19, 0x00
+00018d bd35                      	out TCCR0B, r19
+                                 
+                                 	; Clear the overflow flag
+00018e b335                      	in r19, TIFR0
+00018f 6031                      	sbr r19, 1<<TOV0
+000190 bb35                      	out TIFR0, r19
+                                 
+                                 	; Start timer with new initial count
+000191 bdd6                      	out TCNT0, r29
+000192 bd45                      	out TCCR0B, r20
+                                 
+                                 wait:
+000193 b335                      	in r19, TIFR0
+000194 ff30                      	sbrs r19, TOV0
+000195 cffd                      	rjmp wait
+000196 9508                      	ret
+                                 
+                                 
+                                 delay_test:
+000197 e082                          ldi  r24, 2
+000198 ea90                          ldi  r25, 160
+000199 e9a3                          ldi  r26, 147
+00019a 95aa                      L6: dec  r26
+00019b f7f1                          brne L6
+00019c 959a                          dec  r25
+00019d f7e1                          brne L6
+00019e 958a                          dec  r24
+00019f f7d1                          brne L6
+0001a0 0000                          nop
+0001a1 9508                      	ret
+                                 	
+                                 ; High-Z state. Wait for 80us low
+                                 stage1:
+0001a2 994d                      sbic PIND, 5
+0001a3 cffe                      rjmp stage1
+                                 ; 80us low. Wait for 80us High
+                                 stage2:
+0001a4 9b4d                      sbis PIND, 5
+0001a5 cffe                      rjmp stage2
+                                 ; 80us high. Skip the next 16 lows
+                                 stage3:
+0001a6 e1a0                      ldi r26, 16 ; Next 16 bits to skip
+                                 skip_1:
+0001a7 d079                      rcall delay_5us
+0001a8 30a0                      cpi r26, 0
+0001a9 f039                      breq stage4
+0001aa 9b4d                      sbis PIND, 5
+0001ab c001                      rjmp wait_h
+0001ac cffa                      rjmp skip_1
+                                 ; wait for low to end and decrement r26
+                                 wait_h:
+0001ad 95aa                      dec r26
+                                 wh:
+0001ae 994d                      sbic PIND, 5
+0001af cff7                      rjmp skip_1
+0001b0 cffd                      rjmp wh
+                                 ; Last high before reading data. Set up r26 for next 8 bits needed
+                                 stage4:
+0001b1 d06f                      rcall delay_5us
+0001b2 e0a8                      ldi r26, 8
+0001b3 e020                      ldi r18, 0b000000000 ; Will hold the sequence of bits
+0001b4 9b4d                      sbis PIND, 5
+0001b5 c001                      rjmp stage5
+0001b6 cffa                      rjmp stage4
+                                 ; first low before getting bits
+                                 stage5:
+0001b7 d069                      rcall delay_5us
+0001b8 994d                      sbic PIND, 5
+0001b9 c001                      rjmp stage6
+0001ba cffc                      rjmp stage5
+                                 ; start grabbing bits
+                                 stage6:
+0001bb d045                      rcall delay_50us
+0001bc 95aa                      dec r26
+0001bd 994d                      sbic PIND, 5
+0001be c006                      rjmp add1
+                                 ; add 0 bit
+0001bf 0f22                      lsl r18
+0001c0 30a0                      cpi r26, 0
+0001c1 f079                      breq stage7
+                                 add0:
+0001c2 994d                      sbic PIND, 5
+0001c3 cff7                      rjmp stage6
+0001c4 cffd                      rjmp add0
+                                 ; add 1 bit
+                                 add1:
+0001c5 6020                      sbr r18, 0
+0001c6 0f22                      lsl r18
+0001c7 30a0                      cpi r26, 0
+0001c8 f041                      breq stage7
+                                 wait_for_low:
+0001c9 d057                      rcall delay_5us
+0001ca 9b4d                      sbis PIND, 5
+0001cb c001                      rjmp wait_for_high
+0001cc cffc                      rjmp wait_for_low
+                                 wait_for_high:
+0001cd d053                      rcall delay_5us
+0001ce 994d                      sbic PIND, 5
+0001cf cfeb                      rjmp stage6
+0001d0 cffc                      rjmp wait_for_high
+                                 ; skip next 16 bits. This is the first low, so will skip on highs
+                                 stage7:
+0001d1 d04f                      rcall delay_5us
+0001d2 e0af                      ldi r26, 15
+0001d3 994d                      sbic PIND, 5
+0001d4 c001                      rjmp stage8
+0001d5 cffb                      rjmp stage7
+                                 ; skip bits
+                                 stage8:
+0001d6 d04a                      rcall delay_5us
+0001d7 30a0                      cpi r26, 0
+0001d8 f041                      breq stage9
+0001d9 9b4d                      sbis PIND, 5
+0001da c001                      rjmp w
+0001db cffa                      rjmp stage8
+                                 w:
+0001dc 95aa                      dec r26
+                                 wl:
+0001dd d043                      rcall delay_5us
+0001de 991d                      sbic PINB, 5
+0001df cff6                      rjmp stage8
+0001e0 cffc                      rjmp wl
+                                 ; finish last high 
+                                 stage9:
+0001e1 d03f                      rcall delay_5us
+0001e2 9b4d                      sbis PIND, 5
+0001e3 c001                      rjmp stage10
+0001e4 cffc                      rjmp stage9
+                                 ; finish last low
+                                 stage10:
+0001e5 d03b                      rcall delay_5us
+0001e6 994d                      sbic PIND, 5
+0001e7 c001                      rjmp processbits
+0001e8 cffc                      rjmp stage10
+                                 
+                                 processbits:
+0001e9 e09a                      ldi r25, 0b00001010
+0001ea e080                      ldi r24, 0
+0001eb e0a0                      ldi r26, 0
+0001ec d006                      rcall div8u
+0001ed 2f52                      mov r21, r18
+0001ee df55                      rcall count3
+0001ef 2f58                      mov r21, r24
+0001f0 df53                      rcall count3
+                                 
+0001f1 d024                      rcall delaytest
+0001f2 cf2e                      rjmp tc
+                                 
+                                 ;***************************************************************************
+                                 ;*
+                                 ;* "div8u" - 8/8 Bit Unsigned Division
+                                 ;*
+                                 ;* This subroutine divides the two register variables "dd8u" (dividend) and 
+                                 ;* "dv8u" (divisor). The result is placed in "dres8u" and the remainder in
+                                 ;* "drem8u".
+                                 ;*  
+                                 ;* Number of words	:14
+                                 ;* Number of cycles	:97
+                                 ;* Low registers used	:1 (drem8u)
+                                 ;* High registers used  :3 (dres8u/dd8u,dv8u,dcnt8u)
+                                 ;*
+                                 ;***************************************************************************
+                                 
+0001f3 1b88                      div8u:	sub	r24,r24	;clear remainder and carry
+0001f4 e0b9                      	ldi	r27,9	;init loop counter
+0001f5 1f22                      d8u_1:	rol	r18		;shift left dividend
+0001f6 95ba                      	dec	r27		;decrement counter
+0001f7 f409                      	brne	d8u_2		;if done
+0001f8 9508                      	ret			;    return
+0001f9 1f88                      d8u_2:	rol	r24		;shift dividend into remainder
+0001fa 1b8a                      	sub	r24,r26	;remainder = remainder - divisor
+0001fb f418                      	brcc	d8u_3		;if result negative
+0001fc 0f8a                      	add	r24,r26	;    restore remainder
+0001fd 9488                      	clc			;    clear carry to be shifted into result
+0001fe cff6                      	rjmp	d8u_1		;else
+0001ff 9408                      d8u_3:	sec			;    set carry to be shifted into result
+000200 cff4                      	rjmp	d8u_1
+                                 
+                                 delay_50us:
+000201 e0e1                      	ldi r30, low(1)
+000202 e0f0                      	ldi r31, high(1)
+000203 d001                      	rcall d50us
+000204 9508                      	ret
+                                 	d50us:
+000205 d003                      	rcall timer_delay50us
+000206 9731                      	sbiw Z, 1
+000207 f7c9                      	brne delay_50us
+000208 9508                      	ret
+                                 
+                                 
+                                 timer_delay50us:
+000209 efd5                      	ldi r29, 245
+                                 	; Stop the timer
+00020a b545                      	in r20, TCCR0B
+00020b e030                      	ldi r19, 0x00
+00020c bd35                      	out TCCR0B, r19
+                                 
+                                 	; Clear the overflow flag
+00020d b335                      	in r19, TIFR0
+00020e 6031                      	sbr r19, 1<<TOV0
+00020f bb35                      	out TIFR0, r19
+                                 
+                                 	; Start timer with new initial count
+000210 bdd6                      	out TCNT0, r29
+000211 bd45                      	out TCCR0B, r20
+                                 
+                                 wait50us:
+000212 b335                      	in r19, TIFR0
+000213 ff30                      	sbrs r19, TOV0
+000214 c01d                      	rjmp wait5us
+000215 9508                      	ret
+                                 
+                                 
+                                 delaytest:
+000216 e582                      ldi  r24, 82
+000217 e29b                          ldi  r25, 43
+000218 e0a0                          ldi  r26, 0
+000219 95aa                      L7: dec  r26
+00021a f7f1                          brne L7
+00021b 959a                          dec  r25
+00021c f7e1                          brne L7
+00021d 958a                          dec  r24
+00021e f7d1                          brne L7
+00021f 0000                          nop
+000220 9508                      	ret
+                                 
+                                 
+                                 delay_5us:
+000221 e0e1                      	ldi r30, low(1)
+000222 e0f0                      	ldi r31, high(1)
+000223 d001                      	rcall d5us
+000224 9508                      	ret
+                                 	d5us:
+000225 d003                      	rcall timer_delay5us
+000226 9731                      	sbiw Z, 1
+000227 f7c9                      	brne delay_5us
+000228 9508                      	ret
+                                 
+                                 
+                                 timer_delay5us:
+000229 efdf                      	ldi r29, 255
+                                 	; Stop the timer
+00022a b545                      	in r20, TCCR0B
+00022b e030                      	ldi r19, 0x00
+00022c bd35                      	out TCCR0B, r19
+                                 
+                                 	; Clear the overflow flag
+00022d b335                      	in r19, TIFR0
+00022e 6031                      	sbr r19, 1<<TOV0
+00022f bb35                      	out TIFR0, r19
+                                 
+                                 	; Start timer with new initial count
+000230 bdd6                      	out TCNT0, r29
+000231 bd45                      	out TCCR0B, r20
+                                 
+                                 wait5us:
+000232 b335                      	in r19, TIFR0
+000233 ff30                      	sbrs r19, TOV0
+000234 cffd                      	rjmp wait5us
+000235 9508                      	ret
+                                 
+                                 processbit:
+000236 e080                      ldi r24, 0x00
+000237 e09a                      ldi r25, 0x0A
+000238 dfba                      rcall div8u
+000239 2f52                      mov r21, r18
+00023a df09                      rcall count3
+00023b 2f58                      mov r21, r24
+00023c df07                      rcall count3
+00023d dfd8                      rcall delaytest
+00023e cedc                      rjmp setup_tc
                                  
 
 
@@ -1521,39 +1806,39 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega328P" register use summary:
-x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   0 y  :   0 z  :   3 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  65 r17:   0 r18:   8 r19:   0 r20:   0 
-r21:  11 r22:  11 r23:   4 r24:   8 r25:   8 r26:   4 r27:   4 r28:   2 
-r29:   0 r30:  19 r31:  15 
-Registers used: 12 out of 35 (34.3%)
+r13:   0 r14:   0 r15:   0 r16:  65 r17:  15 r18:  15 r19:  21 r20:   6 
+r21:  15 r22:  11 r23:   4 r24:  21 r25:  14 r26:  21 r27:   4 r28:  19 
+r29:   6 r30:   3 r31:   3 
+Registers used: 17 out of 35 (48.6%)
 
 "ATmega328P" instruction use summary:
-.lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
+.lds  :   0 .sts  :   0 adc   :   0 add   :   1 adiw  :   0 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   1 break :   0 breq  :  46 brge  :   0 brhc  :   0 
+brcc  :   1 brcs  :   1 break :   0 breq  :  50 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   3 brlt  :   0 brmi  :   0 
-brne  :   8 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   6 cbr   :   0 
-clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
+brne  :  15 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   9 cbr   :   0 
+clc   :   1 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   3 cpc   :   0 
-cpi   :  46 cpse  :   0 dec   :  10 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   8 jmp   :   0 
-ld    :   0 ldd   :   0 ldi   :  39 lds   :  20 lpm   :   0 lsl   :   0 
-lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   1 or    :   0 ori   :   0 out   :   1 pop   :   3 
-push  :   3 rcall :  43 ret   :  33 reti  :   0 rjmp  :  25 rol   :   1 
-ror   :   0 sbc   :   0 sbci  :   0 sbi   :   7 sbic  :   5 sbis  :  11 
-sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
+cpi   :  50 cpse  :   0 dec   :  17 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :  10 inc   :   8 jmp   :   0 
+ld    :   0 ldd   :   0 ldi   :  65 lds   :  20 lpm   :   0 lsl   :   2 
+lsr   :   0 mov   :   4 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+neg   :   0 nop   :   2 or    :   0 ori   :   0 out   :  14 pop   :   3 
+push  :   3 rcall :  73 ret   :  44 reti  :   0 rjmp  :  59 rol   :   3 
+ror   :   0 sbc   :   0 sbci  :   0 sbi   :   8 sbic  :  14 sbis  :  17 
+sbiw  :   3 sbr   :   4 sbrc  :   0 sbrs  :   3 sec   :   1 seh   :   0 
 sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :  21 
-sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 24 out of 113 (21.2%)
+sub   :   2 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
+Instructions used: 34 out of 113 (30.1%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000304    772      0    772   32768   2.4%
+[.cseg] 0x000000 0x00047e   1150      0   1150   32768   3.5%
 [.dseg] 0x000100 0x000117      0     23     23    2048   1.1%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
